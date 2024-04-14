@@ -1,0 +1,55 @@
+@import "../../sass/mixins";
+@import "../../sass/typography";
+
+.header {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.7);
+  padding: 15px 30px;
+  //   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    @include maxScreenWidth;
+  }
+
+  &__text {
+    @include header__h1;
+    @include maxScreenWidth;
+
+    // color: transparent;
+    // background: #141e30; /* fallback for old browsers */
+    // // prettier-ignore
+    // background: -webkit-linear-gradient(to left, #243B55, #141E30); /* Chrome 10-25, Safari 5.1-6 */
+    // // prettier-ignore
+    // background: linear-gradient(to left, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    // background-clip: text;
+    // -webkit-background-clip: text;
+
+    display: grid;
+    align-items: center;
+    width: 100%;
+    grid-gap: 1.5rem;
+    grid-template-columns: 1fr max-content 1fr;
+
+    &::after,
+    &::before {
+      content: "";
+      height: 3px;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      transition: all 0.3s;
+      @media only screen and (max-width: 37em) {
+        display: none;
+      }
+    }
+
+    &::before {
+      clip-path: polygon(0% 50%, 100% 0, 100% 100%);
+    }
+
+    &::after {
+      clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+    }
+  }
+}

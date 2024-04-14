@@ -1,0 +1,10 @@
+@mixin maxScreenWidth {
+  max-width: 1200px;
+  margin: auto;
+}
+
+@mixin centerFlexItems {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

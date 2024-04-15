@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Styles from "./gpa-calc.module.scss";
 import { useState } from "react";
-import { Cousine } from "next/font/google";
+import Progress from "react-circle-progress-bar";
 
 const GPA_SCALE = 5;
 
@@ -305,6 +305,20 @@ function GPACalcPage() {
               <p>{calculateGPA().GPAClass}</p>
             </div>
           </div>
+
+          {/* https://www.npmjs.com/package/react-circle-progress-bar */}
+          <Progress
+            progress={(calculateGPA().GPA / GPA_SCALE) * 100}
+            subtitle={`${calculateGPA().GPA.toFixed(2)} / ${GPA_SCALE.toFixed(
+              2
+            )}`}
+            hideValue={true}
+            reduction={0}
+            hideBall={true}
+            // transitionDuration={10000}
+            className={Styles.circle_progress}
+            strokeWidth={7}
+          />
 
           <button
             className={clsx(["btn"])}

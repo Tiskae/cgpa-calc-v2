@@ -8,3 +8,27 @@
   align-items: center;
   justify-content: center;
 }
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+}
+@mixin slideInAnimation {
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+}
+@mixin slideDownAnimation {
+  animation: slideDown 0.3s ease;
+}
+
+@mixin transitionDefault {
+  transition: all 0.3s;
+}

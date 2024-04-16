@@ -4,6 +4,7 @@ import clsx from "clsx";
 import Styles from "./gpa-calc.module.scss";
 import { useState } from "react";
 import Progress from "react-circle-progress-bar";
+import Link from "next/link";
 
 const GPA_SCALE = 5;
 
@@ -249,6 +250,9 @@ function GPACalcPage() {
             showResultPage && Styles.hidden,
           ])}
         >
+          <Link href="/" className="btn" style={{ marginRight: "auto" }}>
+            Back to menu
+          </Link>
           <button
             className={clsx(["btn"])}
             onClick={(e) => {
@@ -265,7 +269,7 @@ function GPACalcPage() {
               setShowResultPage(true);
             }}
           >
-            Calculate CGPA
+            Calculate GPA
           </button>
         </div>
 

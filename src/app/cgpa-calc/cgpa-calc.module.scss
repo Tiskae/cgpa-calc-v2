@@ -16,9 +16,13 @@
   background-color: rgba(256, 256, 256, 0.9);
   box-shadow: 0 0 7px 5px rgba(0, 0, 0, 0.4);
   padding: 50px;
+  display: grid;
+  align-content: center;
+  justify-content: center;
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
+  position: relative;
 
   &::-webkit-scrollbar {
     width: 0.3rem;
@@ -38,17 +42,52 @@
 
 .heading {
   @include header__h1;
+  margin-bottom: 70px;
   text-align: center;
-  margin-bottom: 30px;
 }
 
 .cgpa {
   &__form {
     display: grid;
+    align-content: center;
     gap: 20px;
-
-    button {
-      margin-top: 20px;
-    }
+    transition: all 0.3s ease-in-out;
+    width: 500px;
   }
+}
+
+.action_btns {
+  justify-self: stretch;
+  display: flex;
+  justify-content: space-between;
+}
+
+.result {
+  transform: translateX(50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+  position: absolute;
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 30px;
+  padding: 50px;
+}
+
+.hidden {
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.visible {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  display: grid;
+}
+
+.circle_progress {
+  @include circle_progress;
 }

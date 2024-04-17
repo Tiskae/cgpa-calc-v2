@@ -16,7 +16,7 @@
   }
 }
 @mixin slideInAnimation {
-  animation: slideIn 0.3s ease;
+  animation: slideIn 0.2s ease;
 }
 
 @keyframes slideDown {
@@ -26,9 +26,9 @@
   }
 }
 @mixin slideDownAnimation {
-  animation: slideDown 0.3s ease;
+  animation: slideDown 0.2s ease;
 }
 
 @mixin transitionDefault {
-  transition: all 0.3s;
+  transition: all 0.2s;
 }

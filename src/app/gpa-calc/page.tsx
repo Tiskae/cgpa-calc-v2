@@ -311,18 +311,20 @@ function GPACalcPage() {
           </div>
 
           {/* https://www.npmjs.com/package/react-circle-progress-bar */}
-          <Progress
-            progress={(calculateGPA().GPA / GPA_SCALE) * 100}
-            subtitle={`${calculateGPA().GPA.toFixed(2)} / ${GPA_SCALE.toFixed(
-              2
-            )}`}
-            hideValue={true}
-            reduction={0}
-            hideBall={true}
-            // transitionDuration={10000}
-            className={Styles.circle_progress}
-            strokeWidth={7}
-          />
+          {showResultPage && (
+            <Progress
+              progress={(calculateGPA().GPA / GPA_SCALE) * 100}
+              subtitle={`${calculateGPA().GPA.toFixed(2)} / ${GPA_SCALE.toFixed(
+                2
+              )}`}
+              hideValue={true}
+              reduction={0}
+              hideBall={true}
+              transitionDuration={0.7}
+              className={Styles.circle_progress}
+              strokeWidth={7}
+            />
+          )}
 
           <button
             className={clsx(["btn"])}

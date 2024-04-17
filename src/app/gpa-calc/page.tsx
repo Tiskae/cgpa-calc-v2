@@ -66,7 +66,7 @@ function GPACalcPage() {
     // { id: 7, coursecode: "", unit: 8, grade: "B" },
   ]);
 
-  const [showResultPage, setShowResultPage] = useState<boolean>(true);
+  const [showResultPage, setShowResultPage] = useState<boolean>(false);
 
   const inputFieldChangeHandler = (
     courseId: number,

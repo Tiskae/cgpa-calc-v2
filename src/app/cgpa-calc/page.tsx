@@ -1,7 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import Styles from "./cgpa-calc.module.scss";
 import { useState } from "react";
+import Progress from "react-circle-progress-bar";
+import FormField from "@/components/FormField/FormField";
 
 interface CGPAdataType {
   lastCGPA: string;
@@ -12,9 +15,9 @@ interface CGPAdataType {
 // prettier-ignore
 function CgpaCalculatorPage() {
   const [CGPAdata, setCGPAdata] = useState<CGPAdataType>({
-    lastCGPA: "", completedSemesters: "", currentGPA: ""
+    lastCGPA: "3.7", completedSemesters: "2", currentGPA: "5.0"
   })
-  const [CGPA, setCGPA] = useState<number>();
+  const [CGPA, setCGPA] = useState<number>(0);
 
   const calculateCGPA = (): void => {
     let CGPA = ((+CGPAdata.lastCGPA * +CGPAdata.completedSemesters) + +CGPAdata.currentGPA) / (+CGPAdata.completedSemesters + 1);
@@ -27,47 +30,35 @@ function CgpaCalculatorPage() {
       <div className={Styles.container}>
         <h1 className={Styles.heading}>Calculate Your CGPA</h1>
         <form className={Styles.cgpa__form}>
-          <div className={Styles.cgpa__form__field}>
-            <label className={Styles.cgpa__form__label} htmlFor="last-cgpa">Your last CGPA</label>
-            <input className={Styles.cgpa__form__input} type="number" id="last-cgpa" value={CGPAdata.lastCGPA}
-              onChange={
-                e => {
-                  setCGPAdata(oldData => {
-                    const {completedSemesters, currentGPA} = oldData;
-                    const updatedData:CGPAdataType = {lastCGPA: e.target.value, completedSemesters, currentGPA};
-                    return updatedData
-                  })
-                }
-              } />
-          </div>
+          <FormField id="last-cgpa" label="Your last CGPA" type="number" value={CGPAdata.lastCGPA} onChange={
+             e => {
+              setCGPAdata(oldData => {
+                const {completedSemesters, currentGPA} = oldData;
+                const updatedData:CGPAdataType = {lastCGPA: e.target.value, completedSemesters, currentGPA};
+                return updatedData
+              })
+            }
+          }/>
 
-          <div className={Styles.cgpa__form__field}>
-            <label className={Styles.cgpa__form__label} htmlFor="completed-semesters">No of Completed Semester</label>
-            <input className={Styles.cgpa__form__input} type="number" id="completed-semesters" value={CGPAdata.completedSemesters}
-              onChange={
-                e => {
-                  setCGPAdata(oldData => {
-                    const {lastCGPA, currentGPA} = oldData;
-                    const updatedData:CGPAdataType = {lastCGPA, completedSemesters: e.target.value, currentGPA};
-                    return updatedData
-                  })
-                }
-              } />
-          </div>
+          <FormField id="completed-semesters" label="No of completed semesters" type="number" value={CGPAdata.completedSemesters} onChange={
+             e => {
+              setCGPAdata(oldData => {
+                const {completedSemesters, currentGPA} = oldData;
+                const updatedData:CGPAdataType = {lastCGPA: e.target.value, completedSemesters, currentGPA};
+                return updatedData
+              })
+            }
+          }/>
 
-          <div className={Styles.cgpa__form__field}>
-            <label className={Styles.cgpa__form__label} htmlFor="current-gpa">GPA for current semester</label>
-            <input className={Styles.cgpa__form__input} type="number" id="current-gpa" value={CGPAdata.currentGPA}
-              onChange={
-                e => {
-                  setCGPAdata(oldData => {
-                    const {lastCGPA, completedSemesters} = oldData;
-                    const updatedData:CGPAdataType = {lastCGPA, completedSemesters, currentGPA: e.target.value};
-                    return updatedData
-                  })
-                }
-              }/>
-          </div>
+          <FormField id="current-gpa" label="GPA for current semester" type="number" value={CGPAdata.currentGPA} onChange={
+               e => {
+                setCGPAdata(oldData => {
+                  const {lastCGPA, completedSemesters} = oldData;
+                  const updatedData:CGPAdataType = {lastCGPA, completedSemesters, currentGPA: e.target.value};
+                  return updatedData
+                })
+              }
+          }/>
 
           <button className="btn" onClick={e => {
             e.preventDefault();
@@ -77,7 +68,19 @@ function CgpaCalculatorPage() {
 
         <div>
           <h3>CGPA: {CGPA}</h3>
+          <Progress
+              progress={(CGPA / 5) * 100}
+              subtitle={`${CGPA.toFixed(3)} / 5`}
+              hideValue={true}
+              reduction={0}
+              hideBall={true}
+              transitionDuration={0.7}
+              className={Styles.circle_progress}
+              strokeWidth={7}
+            />
         </div>
+
+        <Link href="/" className="btn">Back to menu</Link>
       </div>
     </main>
   );

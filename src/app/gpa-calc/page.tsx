@@ -20,6 +20,28 @@ interface GPAFormFieldProps {
   inputsUpdateHandler: Function;
 }
 
+////////
+
+type GPAClassType =
+  | ""
+  | "First Class"
+  | "Second Class (Upper)"
+  | "Second Class (Lower)"
+  | "Third Class"
+  | "Pass"
+  | "Probation";
+
+type RemarkType = "" | "Excellent" | "Very Good" | "Good" | "Fair" | "Poor";
+
+interface ResultsType {
+  noOfCourses: number;
+  totalUnits: number;
+  totalPoints: number;
+  GPA: number;
+  GPAClass: GPAClassType;
+  remark: RemarkType;
+}
+
 // prettier-ignore
 function GPAFormField({ id, coursecode, unit, grade, deleteHandler, inputsUpdateHandler }: GPAFormFieldProps) {
   return (
@@ -65,6 +87,15 @@ function GPACalcPage() {
     { id: 6, coursecode: "ZOO 103", unit: 1, grade: "E" },
     // { id: 7, coursecode: "", unit: 8, grade: "B" },
   ]);
+
+  const [resultsData, setResultsData] = useState<ResultsType>({
+    noOfCourses: 0,
+    totalUnits: 0,
+    totalPoints: 0,
+    GPA: 0,
+    GPAClass: "",
+    remark: "",
+  });
 
   const [showResultPage, setShowResultPage] = useState<boolean>(false);
 
@@ -118,26 +149,7 @@ function GPACalcPage() {
     console.log(coursesData);
   };
 
-  type GPAClassType =
-    | "First Class"
-    | "Second Class (Upper)"
-    | "Second Class (Lower)"
-    | "Third Class"
-    | "Pass"
-    | "Probation";
-
-  type RemarkType = "Excellent" | "Very Good" | "Good" | "Fair" | "Poor";
-
-  interface ReturnType {
-    noOfCourses: number;
-    totalUnits: number;
-    totalPoints: number;
-    GPA: number;
-    GPAClass: GPAClassType;
-    remark: RemarkType;
-  }
-
-  const calculateGPA = (): ReturnType => {
+  const calculateGPA = () => {
     const noOfCourses = coursesData.length;
     const totalUnits = coursesData
       .map((c) => c.unit)
@@ -206,7 +218,14 @@ function GPACalcPage() {
       remark = "Poor";
     }
 
-    return { noOfCourses, totalUnits, totalPoints, GPA, GPAClass, remark };
+    setResultsData({
+      noOfCourses,
+      totalUnits,
+      totalPoints,
+      GPA,
+      GPAClass,
+      remark,
+    });
   };
 
   return (
@@ -268,6 +287,9 @@ function GPACalcPage() {
               e.preventDefault();
               setShowResultPage(true);
             }}
+            disabled={coursesData
+              .map((crs) => crs.coursecode)
+              .some((el) => el === "")}
           >
             Calculate GPA
           </button>
@@ -280,41 +302,41 @@ function GPACalcPage() {
           <div className={Styles.results__content}>
             <div className={Styles.a}>
               <h3 className={Styles.a}>No of Courses</h3>
-              <p className={Styles.a}>{calculateGPA().noOfCourses}</p>
+              <p className={Styles.a}>{resultsData.noOfCourses}</p>
             </div>
 
             <div className={Styles.a}>
               <h3 className={Styles.a}>Total units</h3>
-              <p className={Styles.a}>{calculateGPA().totalUnits}</p>
+              <p className={Styles.a}>{resultsData.totalUnits}</p>
             </div>
 
             <div className={Styles.a}>
               <h3 className={Styles.a}>Total points</h3>
-              <p className={Styles.a}>{calculateGPA().totalPoints}</p>
+              <p className={Styles.a}>{resultsData.totalPoints}</p>
             </div>
 
             <div className={Styles.a}>
               <h3 className={Styles.a}>Remark</h3>
-              <p className={Styles.a}>{calculateGPA().remark}</p>
+              <p className={Styles.a}>{resultsData.remark}</p>
             </div>
 
             <div>
               <h3>GPA</h3>
               <p>
-                {calculateGPA().GPA.toFixed(2)} / {GPA_SCALE.toFixed(2)}
+                {resultsData.GPA.toFixed(2)} / {GPA_SCALE.toFixed(2)}
               </p>
             </div>
             <div>
               <h3>GPA Class</h3>
-              <p>{calculateGPA().GPAClass}</p>
+              <p>{resultsData.GPAClass}</p>
             </div>
           </div>
 
           {/* https://www.npmjs.com/package/react-circle-progress-bar */}
           {showResultPage && (
             <Progress
-              progress={(calculateGPA().GPA / GPA_SCALE) * 100}
-              subtitle={`${calculateGPA().GPA.toFixed(2)} / ${GPA_SCALE.toFixed(
+              progress={(resultsData.GPA / GPA_SCALE) * 100}
+              subtitle={`${resultsData.GPA.toFixed(2)} / ${GPA_SCALE.toFixed(
                 2
               )}`}
               hideValue={true}

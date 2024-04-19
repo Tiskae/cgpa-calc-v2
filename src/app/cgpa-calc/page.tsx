@@ -16,7 +16,7 @@ interface CGPAdataType {
 // prettier-ignore
 function CgpaCalculatorPage() {
   const [CGPAdata, setCGPAdata] = useState<CGPAdataType>({
-    lastCGPA: "3.7", completedSemesters: "2", currentGPA: "5.0"
+    lastCGPA: "", completedSemesters: "", currentGPA: ""
   })
   const [CGPA, setCGPA] = useState<number>(0);
   const [showResultPage, setShowResultPage] = useState<boolean>(false);
@@ -67,7 +67,9 @@ function CgpaCalculatorPage() {
             <button className="btn" onClick={e => {
               e.preventDefault();
               calculateCGPA();
-            }}>Calculate CGPA</button>
+            }}
+            disabled={Object.values(CGPAdata).some(el => el === "")} >
+              Calculate CGPA</button>
           </div>
         </form>
 

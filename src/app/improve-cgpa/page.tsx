@@ -1,8 +1,10 @@
 "use client";
+import Styles from "./improve-cgpa.module.scss";
 
 import FormField from "@/components/FormField/FormField";
-import Styles from "./improve-cgpa.module.scss";
 import { useState } from "react";
+import clsx from "clsx";
+import Link from "next/link";
 
 interface ImproveCGPAdataType {
   currentCGPA: string;
@@ -14,6 +16,7 @@ interface ImproveCGPAdataType {
 interface ResultDataType {
   isFeasible: boolean;
   averageGPAtoMaintain: number;
+  maxCGPAachievable: number;
 }
 
 function ImproveCgpaPage() {
@@ -26,7 +29,9 @@ function ImproveCgpaPage() {
   const [resultData, setResultData] = useState<ResultDataType>({
     isFeasible: true,
     averageGPAtoMaintain: 56,
+    maxCGPAachievable: 5,
   });
+  const [showResultPage, setShowResultPage] = useState<boolean>(false);
 
   const calculateImprovement = () => {
     const totalPointsNeeded =
@@ -35,17 +40,25 @@ function ImproveCgpaPage() {
     const currentPoints = +userData.currentCGPA * +userData.semestersCompleted;
     const pointsLeft = totalPointsNeeded - currentPoints;
     const avgGPAtoMaintain = pointsLeft / +userData.semestersLeft;
+    const maxCGPAachievable =
+      (currentPoints + 5 * +userData.semestersLeft) /
+      (+userData.semestersCompleted + +userData.semestersLeft);
+
     setResultData({
       isFeasible: avgGPAtoMaintain <= 5,
       averageGPAtoMaintain: avgGPAtoMaintain,
+      maxCGPAachievable,
     });
+    setShowResultPage(true);
   };
 
   return (
     <main className={Styles.page}>
       <div className={Styles.container}>
-        <h1 className={Styles.heading}>Improve CGPA page</h1>
-        <form className={Styles.form}>
+        <h1 className={clsx([Styles.heading, showResultPage && Styles.hidden])}>
+          Improve CGPA page
+        </h1>
+        <form className={clsx([Styles.form, showResultPage && Styles.hidden])}>
           <FormField
             id="semesters-completed"
             type="number"
@@ -112,19 +125,59 @@ function ImproveCgpaPage() {
             }}
           />
 
-          <button
-            className="btn"
-            onClick={(e) => {
-              e.preventDefault();
-              calculateImprovement();
-            }}
+          <div
+            className={clsx([
+              Styles.action_btns,
+              showResultPage && Styles.hidden,
+            ])}
           >
-            See improvement
-          </button>
+            <Link className="btn" href="/">
+              Back to menu
+            </Link>
+            <button
+              className="btn"
+              onClick={(e) => {
+                e.preventDefault();
+                calculateImprovement();
+              }}
+              disabled={Object.values(userData).some((el) => el === "")}
+            >
+              See improvement
+            </button>
+          </div>
         </form>
 
-        <h2>Is possible: {String(resultData.isFeasible)}</h2>
-        <h2>GPA to maintain: {resultData.averageGPAtoMaintain}</h2>
+        <div className={clsx(Styles.result, showResultPage && Styles.visible)}>
+          {/* <h2>Is possible: {String(resultData.isFeasible)}</h2>
+          <h2>GPA to maintain: {resultData.averageGPAtoMaintain}</h2> */}
+          <div>
+            {resultData.isFeasible && (
+              <h2>
+                To achieve a CGPA of {userData.desiredCGPA} as your final CGPA
+                at graduation, you have to maintain an average of{" "}
+                <span>{resultData.averageGPAtoMaintain.toFixed(2)}</span> for
+                the rest of your course study.
+              </h2>
+            )}
+            {!resultData.isFeasible && (
+              <h2>
+                Unfortunately, it is mathematically impossible for you to
+                achieve a CGPA of {userData.desiredCGPA} in your remaining{" "}
+                {userData.semestersLeft} semesters. The maximum CGPA you can
+                achieve is{" "}
+                <span style={{ color: "red" }}>
+                  {resultData.maxCGPAachievable}
+                </span>
+                , which is calculated assuming an avergage GPA of {"5.00"} per
+                semester till you graduate.
+              </h2>
+            )}
+          </div>
+          <button className="btn" onClick={() => setShowResultPage(false)}>
+            Go back
+          </button>
+        </div>
+
         <h2></h2>
       </div>
     </main>

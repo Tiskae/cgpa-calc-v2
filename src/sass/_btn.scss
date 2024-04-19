@@ -7,4 +7,9 @@
   color: black;
   cursor: pointer;
   height: fit-content;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }

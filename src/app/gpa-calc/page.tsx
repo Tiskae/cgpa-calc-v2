@@ -285,6 +285,7 @@ function GPACalcPage() {
             className={clsx(["btn"])}
             onClick={(e) => {
               e.preventDefault();
+              calculateGPA();
               setShowResultPage(true);
             }}
             disabled={coursesData
@@ -306,12 +307,12 @@ function GPACalcPage() {
             </div>
 
             <div className={Styles.a}>
-              <h3 className={Styles.a}>Total units</h3>
+              <h3 className={Styles.a}>Total No of Units (TNU)</h3>
               <p className={Styles.a}>{resultsData.totalUnits}</p>
             </div>
 
             <div className={Styles.a}>
-              <h3 className={Styles.a}>Total points</h3>
+              <h3 className={Styles.a}>Total Credit Points (TCP)</h3>
               <p className={Styles.a}>{resultsData.totalPoints}</p>
             </div>
 

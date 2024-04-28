@@ -27,20 +27,7 @@
   overflow: scroll;
   overflow-x: hidden;
 
-  &::-webkit-scrollbar {
-    width: 0.3rem;
-    color: #e3e1e1;
-    background-color: rgba(158, 157, 157, 0.7);
-    margin: 1rem;
-    @include transitionDefault;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    width: 0.3rem;
-    // background-color: rgba(255, 255, 255, 0.7);
-    background-color: #5f5f5f;
-    @include transitionDefault;
-  }
+  @include customScrollbarY;
   // clip-path: polygon(0 5%, 0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
 }
 
@@ -228,10 +215,11 @@
     h3 {
       font-size: 13px;
       color: #5f5f5f;
+      margin-bottom: 5px;
     }
 
     p {
-      font-size: 15px;
+      font-size: 17px;
     }
   }
 }

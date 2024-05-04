@@ -11,7 +11,8 @@
   @include maxScreenWidth;
   display: grid;
   justify-content: center;
-  gap: 30px;
+  align-content: flex-start;
+  gap: 60px;
   position: relative;
   background-color: rgba(256, 256, 256, 0.95);
   backdrop-filter: blur(5px);
@@ -25,4 +26,90 @@
 
 .heading {
   @include header__h1;
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  gap: 30px;
+  align-content: center;
+
+  &__sect {
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+    gap: 10px;
+
+    &__heading {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.8);
+      font-weight: 500;
+    }
+
+    &__options {
+      display: flex;
+      border: 2px solid rgba(0, 0, 0, 0.8);
+    }
+
+    &__option {
+      display: flex;
+      align-items: center;
+      justify-items: stretch;
+
+      &:not(:last-of-type) {
+        border-right: 2px solid rgba(0, 0, 0, 0.8);
+      }
+    }
+
+    &__label {
+      font-size: 12px;
+      padding: 10px 20px;
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+
+    &__radio {
+      appearance: none;
+
+      &:checked + label {
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #ffffff;
+      }
+    }
+
+    &__switch {
+      background-color: #e7e5e5;
+      appearance: none;
+      height: 35px;
+      width: 90px;
+      border-radius: 500px;
+      position: relative;
+      transition: all 0.1s;
+      cursor: pointer;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        height: 27px;
+        width: 27px;
+        border-radius: 50%;
+        background-color: #b0aeae;
+        transition: all 0.1s;
+      }
+
+      &:checked {
+        background-color: #555454;
+
+        &::after {
+          transform: translateX(55px);
+          background-color: #dadada;
+        }
+      }
+    }
+  }
 }

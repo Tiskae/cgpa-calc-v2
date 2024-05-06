@@ -2,16 +2,21 @@
 
 import Styles from "./settings.module.scss";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CGPAscaleType } from "@/utils/types";
 import Link from "next/link";
 
 // prettier-ignore
 function SettingsPage() {
-  const [CGPAscale, setCGPAscale] = useState<CGPAscaleType>(5);
+  // @ts-ignore
+  const [CGPAscale, setCGPAscale] = useState<CGPAscaleType>(Number(localStorage.getItem("cgpa-scale")) || 5);
   const [saveData, setSaveData] = useState<boolean>(true);
   const [theme, setTheme] = useState<"Light"| "Dark"| "System preference">("System preference");
   const [cookieConsent, setCookieConsent] = useState<boolean>(true);
+
+  useEffect(()=> {
+    localStorage.setItem("cgpa-scale", String(CGPAscale));
+  }, [CGPAscale])
 
   return (
     <main className={Styles.page}>

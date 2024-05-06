@@ -1,12 +1,10 @@
 "use client";
 
-import clsx from "clsx";
 import Styles from "./gpa-calc.module.scss";
+import clsx from "clsx";
 import { useState } from "react";
 import Progress from "react-circle-progress-bar";
 import Link from "next/link";
-
-const GPA_SCALE = 5;
 
 // Child component
 type GradeType = "A" | "B" | "C" | "D" | "E" | "F";
@@ -53,7 +51,7 @@ function GPAFormField({ id, coursecode, unit, grade, deleteHandler, inputsUpdate
 
       <input type="text" className={Styles.form__field__coursecode} value={coursecode} onChange={e => inputsUpdateHandler(id, "coursecode", e.target.value)}/>
 
-      <select className={Styles.form__field__unit} name="unit" value={unit} defaultValue={unit} onChange={e => inputsUpdateHandler(id, "unit", +e.target.value)}>
+      <select className={Styles.form__field__unit} name="unit" value={unit} onChange={e => inputsUpdateHandler(id, "unit", +e.target.value)}>
         {/* 0 - 15 */}
         {new Array(16).fill(0).map((_, idx) => (
           <option key={idx} value={idx}>
@@ -62,7 +60,7 @@ function GPAFormField({ id, coursecode, unit, grade, deleteHandler, inputsUpdate
         ))}
       </select>
 
-      <select className={clsx([ Styles.form__field__grade, Styles[grade]])} name="grade" value={grade} defaultValue={grade} onChange={e => inputsUpdateHandler(id, "grade", e.target.value)}>
+      <select className={clsx([ Styles.form__field__grade, Styles[grade]])} name="grade" value={grade} onChange={e => inputsUpdateHandler(id, "grade", e.target.value)}>
         {["A", "B", "C", "D", "E", "F"].map((grade) => (
           <option key={grade} value={grade}>
             {grade}
@@ -75,6 +73,9 @@ function GPAFormField({ id, coursecode, unit, grade, deleteHandler, inputsUpdate
 
 // Main page
 function GPACalcPage() {
+  const GPA_SCALE = Number(localStorage.getItem("cgpa-scale")) || 5;
+  console.log(GPA_SCALE);
+
   const [coursesData, setCoursesData] = useState<
     Omit<GPAFormFieldProps, "deleteHandler" | "inputsUpdateHandler">[]
   >([

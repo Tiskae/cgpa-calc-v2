@@ -6,8 +6,10 @@ import { useState } from "react";
 import Progress from "react-circle-progress-bar";
 import Link from "next/link";
 
+import type { GradeType, GPAClassType, RemarkType } from "../../utils/types";
+import { getGradeClassWithRemark } from "@/utils/functions";
+
 // Child component
-type GradeType = "A" | "B" | "C" | "D" | "E" | "F";
 
 interface GPAFormFieldProps {
   id: number;
@@ -20,23 +22,12 @@ interface GPAFormFieldProps {
 
 ////////
 
-type GPAClassType =
-  | ""
-  | "First Class"
-  | "Second Class (Upper)"
-  | "Second Class (Lower)"
-  | "Third Class"
-  | "Pass"
-  | "Probation";
-
-type RemarkType = "" | "Excellent" | "Very Good" | "Good" | "Fair" | "Poor";
-
 interface ResultsType {
   noOfCourses: number;
   totalUnits: number;
   totalPoints: number;
   GPA: number;
-  GPAClass: GPAClassType;
+  GPAclass: GPAClassType;
   remark: RemarkType;
 }
 
@@ -94,7 +85,7 @@ function GPACalcPage() {
     totalUnits: 0,
     totalPoints: 0,
     GPA: 0,
-    GPAClass: "",
+    GPAclass: "",
     remark: "",
   });
 
@@ -158,7 +149,7 @@ function GPACalcPage() {
 
     // Total grade points
     let totalPoints = 0;
-    coursesData.forEach((course, idx) => {
+    coursesData.forEach((course) => {
       const correspondingUnit = course.unit;
 
       switch (course.grade) {
@@ -182,7 +173,7 @@ function GPACalcPage() {
           break;
 
         default:
-          totalPoints + 0;
+          totalPoints += 0;
           break;
       }
     });
@@ -195,36 +186,14 @@ function GPACalcPage() {
     const GPA = (totalPoints / maxPoints) * GPA_SCALE;
 
     // GPA class
-    let GPAClass: GPAClassType = "First Class";
-    let remark: RemarkType = "Excellent";
-
-    if (isNaN(GPA)) {
-    } else if (GPA >= 4.5) {
-      GPAClass = "First Class";
-      remark = "Excellent";
-    } else if (GPA >= 3.5) {
-      GPAClass = "Second Class (Upper)";
-      remark = "Very Good";
-    } else if (GPA >= 2.4) {
-      GPAClass = "Second Class (Lower)";
-      remark = "Good";
-    } else if (GPA >= 1.5) {
-      GPAClass = "Third Class";
-      remark = "Fair";
-    } else if (GPA < 1.5 && GPA >= 1.0) {
-      GPAClass = "Pass";
-      remark = "Poor";
-    } else if (GPA < 1.0) {
-      GPAClass = "Probation";
-      remark = "Poor";
-    }
+    let { CGPAclass: GPAclass, remark } = getGradeClassWithRemark(GPA);
 
     setResultsData({
       noOfCourses,
       totalUnits,
       totalPoints,
       GPA,
-      GPAClass,
+      GPAclass,
       remark,
     });
   };
@@ -330,7 +299,7 @@ function GPACalcPage() {
             </div>
             <div>
               <h3>GPA Class</h3>
-              <p>{resultsData.GPAClass}</p>
+              <p>{resultsData.GPAclass}</p>
             </div>
           </div>
 
